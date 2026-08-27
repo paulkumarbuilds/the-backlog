@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Books — The Backlog</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --paper: #F1EEE3;
+      --paper-card: #F8F6EE;
+      --ink: #1B2430;
+      --ink-soft: #55606E;
+      --stamp-red: #A63A34;
+      --tab-olive: #5B6B4F;
+      --tab-olive-dark: #47543D;
+      --mustard: #C99A3D;
+      --line: #C9C4B0;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background:
+        repeating-linear-gradient(180deg, rgba(0, 0, 0, 0.015) 0px, rgba(0, 0, 0, 0.015) 1px, transparent 1px, transparent 34px),
+        var(--paper);
+      color: var(--ink);
+      font-family: 'Source Serif 4', Georgia, serif;
+      line-height: 1.55;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .wrap {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 36px 28px 80px;
+    }
+
+    .crumb {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11.5px;
+      color: var(--ink-soft);
+      text-transform: capitalize;
+      letter-spacing: 0.3px;
+      margin-bottom: 18px;
+    }
+
+    .crumb a {
+      text-decoration: none;
+      border-bottom: 1px dotted var(--ink-soft);
+    }
+
+    .crumb a:hover {
+      color: var(--ink);
+      border-color: var(--ink);
+    }
+
+    .page-header {
+      background: var(--paper-card);
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--mustard);
+      padding: 22px 26px;
+      position: relative;
+      margin-bottom: 30px;
+    }
+
+    .page-header::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 0 20px 20px 0;
+      border-color: transparent var(--paper) transparent transparent;
+      filter: drop-shadow(-1px 1px 1px rgba(0, 0, 0, 0.12));
+    }
+
+    .page-header .label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: var(--stamp-red);
+      letter-spacing: 0.5px;
+      text-transform: capitalize;
+    }
+
+    .page-header h1 {
+      font-family: 'Source Serif 4', serif;
+      font-weight: 700;
+      font-size: 27px;
+      margin: 8px 0 4px;
+    }
+
+    .page-header .sub {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      color: var(--ink-soft);
+    }
+
+    .page-header .back {
+      display: inline-block;
+      margin-top: 14px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      padding: 8px 15px;
+      border: 1.5px solid var(--ink);
+      border-radius: 20px;
+      text-decoration: none;
+      color: var(--ink);
+      transition: background .15s ease, color .15s ease;
+    }
+
+    .page-header .back:hover {
+      background: var(--ink);
+      color: var(--paper);
+    }
+
+    .shelf-note {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12.5px;
+      color: var(--ink-soft);
+      margin-bottom: 20px;
+      padding-bottom: 14px;
+      border-bottom: 1px dashed var(--line);
+    }
+
+    .book-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 16px;
+    }
+
+    .book-card {
+      background: var(--paper-card);
+      border: 1px solid var(--line);
+      border-left: 3px solid var(--tab-olive);
+      padding: 18px 18px 16px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      animation: rise .45s ease both;
+    }
+
+    @keyframes rise {
+      from {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .book-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 0 14px 14px 0;
+      border-color: transparent var(--paper) transparent transparent;
+      filter: drop-shadow(-1px 1px 1px rgba(0, 0, 0, 0.1));
+    }
+
+    .book-icon {
+      width: 26px;
+      height: 32px;
+      flex-shrink: 0;
+      background: linear-gradient(135deg, var(--tab-olive) 0%, var(--tab-olive-dark) 100%);
+      border-radius: 2px 4px 4px 2px;
+      position: relative;
+      box-shadow: 2px 2px 0 rgba(27, 36, 48, 0.08);
+    }
+
+    .book-icon::after {
+      content: "";
+      position: absolute;
+      left: 3px;
+      top: 4px;
+      bottom: 4px;
+      width: 1px;
+      background: rgba(241, 238, 227, 0.5);
+    }
+
+    .book-title {
+      font-family: 'Source Serif 4', serif;
+      font-weight: 700;
+      font-size: 15.5px;
+      line-height: 1.35;
+    }
+
+    .book-author {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11.5px;
+      color: var(--ink-soft);
+    }
+
+    .book-actions {
+      margin-top: auto;
+      padding-top: 10px;
+    }
+
+    .dl-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11.5px;
+      padding: 8px 14px;
+      border: 1.5px solid var(--ink);
+      border-radius: 20px;
+      background: var(--paper);
+      color: var(--ink);
+      text-decoration: none;
+      transition: background .15s ease, color .15s ease;
+    }
+
+    .dl-btn:hover {
+      background: var(--ink);
+      color: var(--paper);
+    }
+
+    .not-found {
+      text-align: center;
+      padding: 80px 20px;
+    }
+
+    .not-found h1 {
+      font-family: 'Special Elite', monospace;
+      font-size: 22px;
+      margin-bottom: 10px;
+    }
+
+    .not-found p {
+      color: var(--ink-soft);
+      font-size: 14.5px;
+    }
+
+    .btn {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      padding: 9px 16px;
+      border: 1.5px solid var(--ink);
+      border-radius: 20px;
+      background: var(--paper);
+      color: var(--ink);
+      text-decoration: none;
+      transition: background .15s ease, color .15s ease;
+    }
+
+    .btn:hover {
+      background: var(--ink);
+      color: var(--paper);
+    }
+
+    .btn.primary {
+      background: var(--tab-olive-dark);
+      color: var(--paper);
+      border-color: var(--tab-olive-dark);
+    }
+
+    footer {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 20px 28px 60px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11.5px;
+      color: var(--ink-soft);
+      border-top: 1px solid var(--line);
+    }
+
+    footer a {
+      color: var(--stamp-red);
+      text-decoration: none;
+      border-bottom: 1px dotted var(--stamp-red);
+    }
+  </style>
+  <script data-goatcounter="https://the-backlog.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+</head>
+
+<body>
+
+  <div class="wrap" id="app"></div>
+
+  <footer>
+    Part of <a href="index.html">The Backlog</a> — missing a book or found a broken link? <a
+      href="mailto:paulhack1729@gmail.com">paulhack1729@gmail.com</a>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script>
+    function esc(s) { return (s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
+
+    function render() {
+      const params = new URLSearchParams(window.location.search);
+      const code = (params.get('code') || '').toLowerCase();
+      const subj = SUBJECTS[code];
+      const app = document.getElementById('app');
+
+      if (!subj) {
+        app.innerHTML = `
+      <div class="crumb"><a href="index.html">The Backlog</a> · Books</div>
+      <div class="not-found">
+        <h1>No books listed for this subject yet</h1>
+        <p>Either the subject code isn't recognized, or books haven't been added for it yet.</p>
+        <a class="btn primary" href="index.html" style="margin-top:20px; display:inline-block;">← Back to The Backlog</a>
+      </div>`;
+        document.title = "Books not found — The Backlog";
+        return;
+      }
+
+      document.title = `Books · ${subj.code} ${subj.name} — The Backlog`;
+
+      const books = subj.books || [];
+
+      app.innerHTML = `
+    <div class="crumb"><a href="index.html">The Backlog</a> · <a href="index.html">Semester ${subj.sem}</a> · <a href="subject.html?code=${subj.code.toLowerCase()}">${subj.code}</a> · Books</div>
+
+    <div class="page-header">
+      <div class="label">Reference Books</div>
+      <h1>${esc(subj.name)}</h1>
+      <div class="sub">${subj.code} · Same books, regardless of who's teaching</div>
+      <a class="back" href="subject.html?code=${subj.code.toLowerCase()}">← Back to ${subj.code}</a>
+    </div>
+
+    <div class="shelf-note">${books.length} book${books.length === 1 ? '' : 's'} on file for this subject.</div>
+
+    <div class="book-grid">
+      ${books.length ? books.map(b => `
+        <div class="book-card">
+          <div class="book-icon"></div>
+          <div>
+            <div class="book-title">${esc(b.title)}</div>
+            <div class="book-author">${esc(b.author)}</div>
+          </div>
+          <div class="book-actions">
+            <a class="dl-btn" href="${encodeURI(b.file)}" target="_blank" rel="noopener" download>⤓ Download PDF</a>
+          </div>
+        </div>`).join('') : `<div class="empty-note" style="font-family:'IBM Plex Mono', monospace; color:var(--ink-soft); font-style:italic;">No books on file for this subject yet.</div>`}
+    </div>
+  `;
+    }
+
+    render();
+  </script>
+
+</body>
+
+</html>

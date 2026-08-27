@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Subject — The Backlog</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --paper: #F1EEE3;
+      --paper-card: #F8F6EE;
+      --ink: #1B2430;
+      --ink-soft: #55606E;
+      --stamp-red: #A63A34;
+      --tab-olive: #5B6B4F;
+      --tab-olive-dark: #47543D;
+      --mustard: #C99A3D;
+      --line: #C9C4B0;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background:
+        repeating-linear-gradient(180deg, rgba(0, 0, 0, 0.015) 0px, rgba(0, 0, 0, 0.015) 1px, transparent 1px, transparent 34px),
+        var(--paper);
+      color: var(--ink);
+      font-family: 'Source Serif 4', Georgia, serif;
+      line-height: 1.55;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .wrap {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 36px 28px 80px;
+    }
+
+    .crumb {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11.5px;
+      color: var(--ink-soft);
+      text-transform: capitalize;
+      letter-spacing: 0.3px;
+      margin-bottom: 18px;
+    }
+
+    .crumb a {
+      text-decoration: none;
+      border-bottom: 1px dotted var(--ink-soft);
+    }
+
+    .crumb a:hover {
+      color: var(--ink);
+      border-color: var(--ink);
+    }
+
+    .subject-header {
+      background: var(--paper-card);
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--tab-olive);
+      padding: 24px 26px;
+      position: relative;
+      margin-bottom: 30px;
+    }
+
+    .subject-header::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 0 20px 20px 0;
+      border-color: transparent var(--paper) transparent transparent;
+      filter: drop-shadow(-1px 1px 1px rgba(0, 0, 0, 0.12));
+    }
+
+    .subject-header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .code-credits {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .code {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12.5px;
+      color: var(--stamp-red);
+      letter-spacing: 0.5px;
+    }
+
+    .credits-tag {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10.5px;
+      color: var(--ink-soft);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 2px 9px;
+    }
+
+    .subject-header h1 {
+      font-family: 'Source Serif 4', serif;
+      font-weight: 700;
+      font-size: 30px;
+      margin: 10px 0 4px;
+    }
+
+    .subject-header .sub {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      color: var(--ink-soft);
+      text-transform: capitalize;
+    }
+
+    .stamp {
+      font-family: 'Special Elite', monospace;
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      padding: 6px 12px;
+      border-radius: 3px;
+      text-transform: capitalize;
+      white-space: nowrap;
+    }
+
+    .stamp-verified {
+      color: var(--stamp-red);
+      border: 2px solid var(--stamp-red);
+      transform: rotate(-5deg);
+      -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" result="noise"/><feColorMatrix in="noise" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 9 -3"/></filter><rect width="100%25" height="100%25" filter="url(%23n)"/></svg>');
+      -webkit-mask-size: 130px 60px;
+      mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" result="noise"/><feColorMatrix in="noise" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 9 -3"/></filter><rect width="100%25" height="100%25" filter="url(%23n)"/></svg>');
+      mask-size: 130px 60px;
+      opacity: 0.92;
+    }
+
+    .stamp-broken {
+      color: var(--stamp-red);
+      border: 2px solid var(--stamp-red);
+      background: rgba(166, 58, 52, 0.06);
+      transform: rotate(-4deg);
+      -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg"><filter id="n2"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" result="noise"/><feColorMatrix in="noise" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 9 -3"/></filter><rect width="100%25" height="100%25" filter="url(%23n2)"/></svg>');
+      -webkit-mask-size: 130px 60px;
+      mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg"><filter id="n2"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" result="noise"/><feColorMatrix in="noise" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 9 -3"/></filter><rect width="100%25" height="100%25" filter="url(%23n2)"/></svg>');
+      mask-size: 130px 60px;
+      opacity: 0.95;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      padding: 9px 16px;
+      border: 1.5px solid var(--ink);
+      border-radius: 20px;
+      background: var(--paper);
+      color: var(--ink);
+      text-decoration: none;
+      transition: background .15s ease, color .15s ease;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background: var(--ink);
+      color: var(--paper);
+    }
+
+    .btn.primary {
+      background: var(--tab-olive-dark);
+      color: var(--paper);
+      border-color: var(--tab-olive-dark);
+    }
+
+    .btn.primary:hover {
+      background: var(--ink);
+      border-color: var(--ink);
+    }
+
+    section {
+      margin-bottom: 34px;
+    }
+
+    .section-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      color: var(--ink-soft);
+      text-transform: capitalize;
+      letter-spacing: 0.5px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .section-label::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--line);
+    }
+
+    .prose-block {
+      background: var(--paper-card);
+      border: 1px solid var(--line);
+      padding: 20px 22px;
+      font-size: 14.5px;
+      color: var(--ink-soft);
+    }
+
+    .prose-block p {
+      margin: 0 0 10px;
+    }
+
+    .prose-block p:last-child {
+      margin-bottom: 0;
+    }
+
+      .topic-list{ list-style:none; margin:14px 0 16px; padding:0; display:grid; grid-template-columns:repeat(auto-fill, minmax(200px,1fr)); gap:6px 14px; }
+  .topic-list li{ position:relative; padding-left:16px; font-size:13.5px; color:var(--ink-soft); }
+  .topic-list li::before{ content:"›"; position:absolute; left:0; color:var(--tab-olive-dark); font-weight:700; }
+  .syllabus-pdf-link{
+    display:inline-flex; align-items:center; gap:6px; margin-top:4px;
+    font-family:'IBM Plex Mono', monospace; font-size:11.5px; color:var(--stamp-red);
+    text-decoration:none; border-bottom:1px dotted var(--stamp-red);
+  }
+  .syllabus-pdf-link:hover{ color:var(--ink); border-color:var(--ink); }
+
+    .teacher-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      gap: 14px;
+    }
+
+    .teacher-card {
+      background: var(--paper-card);
+      border: 1px solid var(--line);
+      border-left: 3px solid var(--mustard);
+      padding: 14px 16px;
+    }
+
+    .teacher-card .name {
+      font-family: 'Source Serif 4', serif;
+      font-weight: 700;
+      font-size: 15.5px;
+      margin-bottom: 2px;
+    }
+
+    .teacher-card .rank {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10.5px;
+      color: var(--ink-soft);
+    }
+
+    .teacher-card .years {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: var(--stamp-red);
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px dashed var(--line);
+    }
+
+    .note-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .note-list li {
+      position: relative;
+      padding-left: 20px;
+      margin-bottom: 9px;
+      font-size: 14.5px;
+      color: var(--ink-soft);
+    }
+
+    .note-list li::before {
+      content: "—";
+      position: absolute;
+      left: 0;
+      color: var(--tab-olive-dark);
+    }
+
+    .pyq-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .pyq-btn {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13px;
+      padding: 10px 18px;
+      border: 1.5px solid var(--ink);
+      border-radius: 3px;
+      background: var(--paper-card);
+      color: var(--ink);
+      text-decoration: none;
+      transition: background .15s ease, color .15s ease;
+    }
+
+    .pyq-btn:hover {
+      background: var(--ink);
+      color: var(--paper);
+    }
+
+    .pyq-note {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      color: var(--ink-soft);
+      padding: 10px 18px;
+      border: 1.5px dashed var(--line);
+      border-radius: 3px;
+    }
+
+    .pyq-all-btn {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      padding: 10px 16px;
+      border: 1.5px dashed var(--tab-olive-dark);
+      border-radius: 3px;
+      background: none;
+      color: var(--tab-olive-dark);
+      cursor: pointer;
+      transition: background .15s ease, color .15s ease;
+      margin-left: auto;
+    }
+
+    .pyq-all-btn:hover {
+      background: var(--tab-olive-dark);
+      color: var(--paper);
+    }
+
+    .pyq-all-btn:disabled {
+      opacity: 0.6;
+      cursor: wait;
+    }
+
+    .year-rows {
+      display: flex;
+      flex-direction: column;
+      border: 1px solid var(--line);
+      background: var(--paper-card);
+    }
+
+    .year-row-wrap {
+      border-bottom: 1px solid var(--line);
+    }
+
+    .year-row-wrap:last-child {
+      border-bottom: none;
+    }
+
+    .year-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 13px 18px;
+      flex-wrap: wrap;
+    }
+
+    .year-row .yr-info {
+      font-size: 14px;
+    }
+
+    .year-row .yr-info .yr {
+      font-family: 'IBM Plex Mono', monospace;
+      color: var(--stamp-red);
+      margin-right: 8px;
+    }
+
+    .year-row .yr-info .who {
+      color: var(--ink-soft);
+    }
+
+    .year-row .yr-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .chip {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11.5px;
+      padding: 6px 12px;
+      border: 1px solid var(--ink);
+      border-radius: 20px;
+      text-decoration: none;
+      color: var(--ink);
+      background: var(--paper);
+      transition: background .15s ease, color .15s ease;
+      cursor: pointer;
+    }
+
+    .chip:hover {
+      background: var(--ink);
+      color: var(--paper);
+    }
+
+    .chip.pending {
+      border-style: dashed;
+      color: var(--ink-soft);
+      cursor: default;
+    }
+
+    .chip.pending:hover {
+      background: none;
+      color: var(--ink-soft);
+    }
+
+    .files-list {
+      display: none;
+      flex-direction: column;
+      margin: 0 18px 12px;
+      border: 1px solid var(--line);
+      background: var(--paper);
+    }
+
+    .files-list.open {
+      display: flex;
+    }
+
+    .file-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 9px 14px;
+      border-bottom: 1px dashed var(--line);
+      font-size: 13px;
+    }
+
+    .file-item:last-child {
+      border-bottom: none;
+    }
+
+    .file-item .file-name {
+      color: var(--ink-soft);
+    }
+
+    .file-item a {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: var(--stamp-red);
+      text-decoration: none;
+      border-bottom: 1px dotted var(--stamp-red);
+      white-space: nowrap;
+    }
+
+    .chip.toggle::after {
+      content: " ▾";
+      font-size: 9px;
+    }
+
+    .chip.toggle.open::after {
+      content: " ▴";
+    }
+
+    .additional-wrap {
+      border: 1px solid var(--line);
+      border-left: 3px solid var(--stamp-red);
+      background: var(--paper-card);
+    }
+
+    .additional-sub {
+      padding: 18px 22px;
+    }
+
+    .additional-sub+.additional-sub {
+      border-top: 1px dashed var(--line);
+    }
+
+    .additional-sub-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11.5px;
+      text-transform: capitalize;
+      letter-spacing: 0.5px;
+      color: var(--ink);
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .empty-note {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12.5px;
+      color: var(--ink-soft);
+      font-style: italic;
+    }
+
+    .assignment-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 0;
+      flex-wrap: wrap;
+    }
+
+    .assignment-row .yr-info .yr {
+      font-family: 'IBM Plex Mono', monospace;
+      color: var(--stamp-red);
+      margin-right: 8px;
+    }
+
+    .eval-note {
+      font-size: 12.5px;
+      color: var(--ink-soft);
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px dashed var(--line);
+      font-style: italic;
+    }
+
+    .not-found {
+      text-align: center;
+      padding: 80px 20px;
+    }
+
+    .not-found h1 {
+      font-family: 'Special Elite', monospace;
+      font-size: 22px;
+      margin-bottom: 10px;
+    }
+
+    .not-found p {
+      color: var(--ink-soft);
+      font-size: 14.5px;
+    }
+
+    footer {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 20px 28px 60px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11.5px;
+      color: var(--ink-soft);
+      border-top: 1px solid var(--line);
+    }
+
+    footer a {
+      color: var(--stamp-red);
+      text-decoration: none;
+      border-bottom: 1px dotted var(--stamp-red);
+    }
+  </style>
+  <script data-goatcounter="https://the-backlog.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+</head>
+
+<body>
+
+  <div class="wrap" id="app">
+    <!-- Rendered by JS below -->
+  </div>
+
+  <footer>
+    Part of <a href="index.html">The Backlog</a> — spotted something wrong on this page? <a
+      href="mailto:paulhack1729@gmail.com">paulhack1729@gmail.com</a>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script>
+    function fname(path) { return path.split('/').pop(); }
+    function esc(s) { return (s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
+
+    function filesListHTML(id, files) {
+      return `<div class="files-list" id="${id}">
+    ${files.map(f => `<div class="file-item"><span class="file-name">${esc(f.name)}</span><a href="${encodeURI(f.file)}" target="_blank" rel="noopener" download>Download</a></div>`).join('')}
+  </div>`;
+    }
+
+    function referenceNotesHTML(subj) {
+      if (!subj.referenceNotes || subj.referenceNotes.length === 0) {
+        return `<div class="empty-note">No reference notes available.</div>`;
+      }
+      return `<div class="year-rows">${subj.referenceNotes.map((entry, i) => {
+        const id = 'ref-files-' + i;
+        if (entry.pending) {
+          return `<div class="year-row-wrap"><div class="year-row">
+        <div class="yr-info"><span class="yr">${esc(entry.label)}</span><span class="who">${esc(entry.teacher || '')}</span></div>
+        <div class="yr-actions"><span class="chip pending">Not yet available</span></div>
+      </div></div>`;
+        }
+        return `<div class="year-row-wrap"><div class="year-row">
+      <div class="yr-info"><span class="yr">${esc(entry.label)}</span><span class="who">${esc(entry.teacher || '')}</span></div>
+      <div class="yr-actions"><button class="chip toggle" data-target="${id}">View Files (${entry.files.length})</button></div>
+    </div>${filesListHTML(id, entry.files)}</div>`;
+      }).join('')}</div>`;
+    }
+
+    function practiceQuestionsHTML(subj) {
+      if (!subj.practiceQuestions || subj.practiceQuestions.length === 0) return '';
+      return `<section>
+    <div class="section-label">Practice Questions</div>
+    <div class="year-rows">${subj.practiceQuestions.map((entry, i) => {
+        const id = 'pq-files-' + i;
+        return `<div class="year-row-wrap"><div class="year-row">
+        <div class="yr-info"><span class="yr">${esc(entry.year)}</span></div>
+        <div class="yr-actions"><button class="chip toggle" data-target="${id}">View Files (${entry.files.length})</button></div>
+      </div>${filesListHTML(id, entry.files)}</div>`;
+      }).join('')}</div>
+  </section>`;
+    }
+
+    function studentNotesHTML(subj) {
+      if (!subj.studentNotes || subj.studentNotes.length === 0) {
+        return `<div class="empty-note">No student notes available.</div>`;
+      }
+      return `<div class="year-rows">${subj.studentNotes.map((entry, i) => {
+        const id = 'stu-files-' + i;
+        return `<div class="year-row-wrap"><div class="year-row">
+      <div class="yr-info"><span class="yr">${esc(entry.year)}</span></div>
+      <div class="yr-actions"><button class="chip toggle" data-target="${id}">View Files (${entry.files.length})</button></div>
+    </div>${filesListHTML(id, entry.files)}</div>`;
+      }).join('')}</div>`;
+    }
+
+    function assignmentsHTML(subj) {
+      if (!subj.assignments || subj.assignments.length === 0) {
+        return `<div class="empty-note">No assignment or project data on file.</div>`;
+      }
+      return subj.assignments.map((entry, i) => {
+        const id = 'asg-files-' + i;
+        return `<div class="assignment-row">
+      <div class="yr-info"><span class="yr">${esc(entry.year)}</span><span class="who">${esc(entry.teacher || '')}</span></div>
+      <button class="chip toggle" data-target="${id}">View Files (${entry.files.length})</button>
+    </div>${filesListHTML(id, entry.files)}`;
+      }).join('') + `<div class="eval-note">Evaluation for this component depends on the individual teacher — how it's structured and weighted can vary year to year.</div>`;
+    }
+
+    function pyqHTML(subj) {
+      const rows = subj.pyq.map(p => `<a class="pyq-btn" href="${encodeURI(p.file)}" target="_blank" rel="noopener" download><span style="font-weight:600">PYQ</span> ${esc(p.year)}</a>`).join('');
+      return `<div class="pyq-row">${rows}<button class="pyq-all-btn" id="downloadAllBtn">⤓ Download All PYQs</button></div>`;
+    }
+
+    function render() {
+      const params = new URLSearchParams(window.location.search);
+      const code = (params.get('code') || '').toLowerCase();
+      const subj = SUBJECTS[code];
+      const app = document.getElementById('app');
+
+      if (!subj) {
+        app.innerHTML = `
+      <div class="crumb"><a href="index.html">The Backlog</a> · Subject</div>
+      <div class="not-found">
+        <h1>This subject's page isn't live yet</h1>
+        <p>Content for this subject hasn't been added to The Backlog. Check back later, or reach out if you have material to contribute.</p>
+        <a class="btn primary" href="index.html" style="margin-top:20px; display:inline-block;">← Back to The Backlog</a>
+      </div>`;
+        document.title = "Subject not found — The Backlog";
+        return;
+      }
+
+      document.title = `${subj.code} · ${subj.name} — The Backlog`;
+
+      const stampClass = subj.status === 'verified' ? 'stamp-verified' : 'stamp-broken';
+      const stampText = subj.status === 'verified' ? 'Verified' : 'Broken / Missing';
+
+      app.innerHTML = `
+    <div class="crumb"><a href="index.html">The Backlog</a> · <a href="index.html">Semester ${subj.sem}</a> · ${subj.code}</div>
+
+    <div class="subject-header">
+      <div class="subject-header-top">
+        <div>
+          <div class="code-credits">
+            <span class="code">${subj.code}</span>
+            <span class="credits-tag">${subj.credits} Credits</span>
+          </div>
+          <h1>${subj.name}</h1>
+          <div class="sub">${subj.type === 'core' ? 'Core' : 'Elective'} · Semester ${subj.sem}</div>
+        </div>
+        <div class="stamp ${stampClass}">${stampText}</div>
+      </div>
+      <div class="header-actions">
+        <a class="btn primary" href="books.html?code=${subj.code.toLowerCase()}">Books for this subject</a>
+        <a class="btn" href="index.html">← Back to Semester ${subj.sem}</a>
+      </div>
+    </div>
+
+        <section>
+      <div class="section-label">Syllabus</div>
+      <div class="prose-block">
+        <p>${esc(subj.syllabus)}</p>
+        ${subj.topics ? `<ul class="topic-list">${subj.topics.map(t => `<li>${esc(t)}</li>`).join('')}</ul>` : ''}
+        <a class="syllabus-pdf-link" href="assets/MCA_Syllabus.pdf" target="_blank" rel="noopener">⤓ Download Full Syllabus (PDF)</a>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-label">Taught By</div>
+      <div class="teacher-grid">
+        ${subj.teachers.map(t => `<div class="teacher-card">
+          <div class="name">${esc(t.name)}</div>
+          <div class="rank">${esc(t.rank)}</div>
+          <div class="years">${esc(t.years)}${t.current ? ' · current' : ''}</div>
+        </div>`).join('')}
+      </div>
+    </section>
+
+    <section>
+      <div class="section-label">Note · Points To Remember</div>
+      <div class="prose-block">
+        <ul class="note-list">${(subj.notes || []).map(n => `<li>${esc(n)}</li>`).join('')}</ul>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-label">PYQ</div>
+      ${pyqHTML(subj)}
+    </section>
+
+    ${practiceQuestionsHTML(subj)}
+
+    <section>
+      <div class="section-label">Reference Notes</div>
+      ${referenceNotesHTML(subj)}
+    </section>
+
+    <section>
+      <div class="section-label">Additional Material</div>
+      <div class="additional-wrap">
+        <div class="additional-sub">
+          <div class="additional-sub-label">Student Notes</div>
+          ${studentNotesHTML(subj)}
+        </div>
+        <div class="additional-sub">
+          <div class="additional-sub-label">Assignment / Project</div>
+          ${assignmentsHTML(subj)}
+        </div>
+      </div>
+    </section>
+  `;
+
+      // Wire up file-list toggles
+      document.querySelectorAll('.chip.toggle').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const target = document.getElementById(btn.dataset.target);
+          const isOpen = target.classList.toggle('open');
+          btn.classList.toggle('open', isOpen);
+          const count = btn.textContent.match(/\((\d+)\)/);
+          btn.textContent = (isOpen ? 'Hide Files ' : 'View Files ') + (count ? count[0] : '');
+        });
+      });
+
+      // Wire up "Download All PYQs" — zips every PYQ file on the fly
+      const allBtn = document.getElementById('downloadAllBtn');
+      if (allBtn) {
+        allBtn.addEventListener('click', async () => {
+          allBtn.disabled = true;
+          allBtn.textContent = 'Zipping…';
+          try {
+            const zip = new JSZip();
+            for (const p of subj.pyq) {
+              const res = await fetch(encodeURI(p.file));
+              const blob = await res.blob();
+              zip.file(`${subj.code}-${p.year}.pdf`, blob);
+            }
+            const content = await zip.generateAsync({ type: 'blob' });
+            const url = URL.createObjectURL(content);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${subj.code}-all-pyqs.zip`;
+            a.click();
+            URL.revokeObjectURL(url);
+          } catch (err) {
+            alert('Could not build the zip — this only works once the site is hosted (not opened as a local file), since fetching PDFs needs a real server.');
+          }
+          allBtn.disabled = false;
+          allBtn.textContent = '⤓ Download All PYQs';
+        });
+      }
+    }
+
+    render();
+  </script>
+
+</body>
+
+</html>

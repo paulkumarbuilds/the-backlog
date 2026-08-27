@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Backlog — MCA JNU</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --paper: #F1EEE3;
+      --paper-card: #F8F6EE;
+      --ink: #1B2430;
+      --ink-soft: #55606E;
+      --stamp-red: #A63A34;
+      --stamp-grey: #7C8478;
+      --tab-olive: #5B6B4F;
+      --tab-olive-dark: #47543D;
+      --mustard: #C99A3D;
+      --line: #C9C4B0;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background:
+        repeating-linear-gradient(180deg, rgba(0, 0, 0, 0.015) 0px, rgba(0, 0, 0, 0.015) 1px, transparent 1px, transparent 34px),
+        var(--paper);
+      color: var(--ink);
+      font-family: 'Source Serif 4', Georgia, serif;
+      line-height: 1.5;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    button {
+      font: inherit;
+      cursor: pointer;
+    }
+
+    header {
+      padding: 44px 32px 24px;
+      max-width: 1180px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 24px;
+      border-bottom: 2px solid var(--ink);
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .stamp-mark {
+      width: 46px;
+      height: 46px;
+      border: 2px solid var(--stamp-red);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--stamp-red);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      font-weight: 600;
+      transform: rotate(-10deg);
+      flex-shrink: 0;
+    }
+
+    h1 {
+      font-family: 'Special Elite', monospace;
+      font-weight: 400;
+      font-size: clamp(26px, 4vw, 38px);
+      margin: 0;
+      letter-spacing: 0.5px;
+    }
+
+    .type-cursor {
+      display: inline-block;
+      margin-left: 2px;
+      color: var(--stamp-red);
+      animation: blink 0.9s steps(1) infinite;
+    }
+
+    @keyframes blink {
+      50% {
+        opacity: 0;
+      }
+    }
+
+    .tagline {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12.5px;
+      color: var(--ink-soft);
+      margin-top: 4px;
+    }
+
+    .meta {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      color: var(--ink-soft);
+      text-align: right;
+      line-height: 1.7;
+    }
+
+    .search-wrap {
+      max-width: 1180px;
+      margin: 22px auto 0;
+      padding: 0 32px;
+    }
+
+    .search-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      text-transform: capitalize;
+      letter-spacing: 0.8px;
+      color: var(--ink-soft);
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .search-box {
+      width: 100%;
+      padding: 12px 14px;
+      font-family: 'Source Serif 4', serif;
+      font-size: 16px;
+      background: var(--paper-card);
+      border: 1.5px solid var(--ink);
+      color: var(--ink);
+      outline: none;
+    }
+
+    .search-box:focus {
+      box-shadow: 2px 2px 0 var(--mustard);
+    }
+
+    .search-box::placeholder {
+      color: #9a9382;
+    }
+
+    nav.top-tabs {
+      max-width: 1180px;
+      margin: 20px auto 0;
+      padding: 0 32px;
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      border-bottom: 1px solid var(--ink);
+    }
+
+    .top-tab {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13px;
+      letter-spacing: 0.3px;
+      text-transform: capitalize;
+      background: var(--tab-olive);
+      color: #F1EEE3;
+      border: none;
+      padding: 11px 20px 9px;
+      border-radius: 6px 6px 0 0;
+      position: relative;
+      top: 2px;
+      opacity: 0.72;
+      transition: opacity .15s ease, transform .15s ease;
+    }
+
+    .top-tab:hover {
+      opacity: 0.9;
+    }
+
+    .top-tab.active {
+      opacity: 1;
+      background: var(--tab-olive-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 -2px 0 var(--mustard) inset;
+    }
+
+    .top-tab.main-tab {
+      background: var(--stamp-red);
+    }
+
+    .top-tab.main-tab.active {
+      background: #8a2f2a;
+    }
+
+    nav.sub-tabs {
+      max-width: 1180px;
+      margin: 16px auto 0;
+      padding: 0 32px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .sub-tab {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11.5px;
+      background: var(--paper-card);
+      border: 1px solid var(--line);
+      color: var(--ink-soft);
+      padding: 6px 12px;
+      border-radius: 20px;
+      transition: all .15s ease;
+    }
+
+    .sub-tab:hover {
+      border-color: var(--ink);
+      color: var(--ink);
+    }
+
+    .sub-tab.active {
+      background: var(--ink);
+      color: var(--paper);
+      border-color: var(--ink);
+    }
+
+    main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 24px 32px 60px;
+    }
+
+    .section-title {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      color: var(--ink-soft);
+      text-transform: capitalize;
+      letter-spacing: 0.8px;
+      font-weight: 600;
+      margin: 28px 0 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-title::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--line);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(268px, 1fr));
+      gap: 18px;
+    }
+
+    .card {
+      background: var(--paper-card);
+      border: 1px solid var(--line);
+      border-left: 3px solid var(--tab-olive);
+      padding: 18px 18px 46px;
+      position: relative;
+      box-shadow: 1px 2px 0 rgba(27, 36, 48, 0.05);
+      animation: rise .45s ease both;
+      transition: transform .2s ease, box-shadow .2s ease;
+      transform-origin: bottom center;
+    }
+
+    @keyframes rise {
+      from {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 0 16px 16px 0;
+      border-color: transparent var(--paper) transparent transparent;
+      filter: drop-shadow(-1px 1px 1px rgba(0, 0, 0, 0.12));
+    }
+
+    .card:hover {
+      box-shadow: 4px 8px 6px rgba(27, 36, 48, 0.14);
+      transform: translateY(-5px) rotate(-1.3deg);
+    }
+
+    .card:nth-child(even):hover {
+      transform: translateY(-5px) rotate(1.3deg);
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 8px;
+    }
+
+    .card-code {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: var(--stamp-red);
+      letter-spacing: 0.5px;
+    }
+
+    .credits-tag {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      color: var(--ink-soft);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 2px 8px;
+      white-space: nowrap;
+    }
+
+    .card h3 {
+      font-family: 'Source Serif 4', serif;
+      font-weight: 700;
+      font-size: 17.5px;
+      margin: 8px 0 6px;
+    }
+
+    .card .preview {
+      font-size: 12.5px;
+      color: var(--ink-soft);
+      margin: 0 0 10px;
+      line-height: 1.45;
+    }
+
+    .card .teacher-line {
+      font-size: 12.5px;
+      color: var(--ink-soft);
+      margin: 0 0 14px;
+      padding-top: 8px;
+      border-top: 1px dashed var(--line);
+    }
+
+    .card .teacher-line strong {
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    .card .rank-tag {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9.5px;
+      color: var(--tab-olive-dark);
+      border: 1px solid var(--tab-olive);
+      border-radius: 20px;
+      padding: 1px 7px;
+      margin-left: 4px;
+      white-space: nowrap;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 4px;
+    }
+
+    .btn {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11.5px;
+      padding: 7px 12px;
+      border: 1px solid var(--ink);
+      border-radius: 20px;
+      background: var(--paper);
+      color: var(--ink);
+      text-decoration: none;
+      transition: background .15s ease, color .15s ease;
+    }
+
+    .btn:hover {
+      background: var(--ink);
+      color: var(--paper);
+    }
+
+    .btn.primary {
+      background: var(--tab-olive-dark);
+      color: var(--paper);
+      border-color: var(--tab-olive-dark);
+    }
+
+    .btn.primary:hover {
+      background: var(--ink);
+      border-color: var(--ink);
+    }
+
+    /* Rubber stamp — static, textured, per status */
+    .stamp {
+      position: absolute;
+      bottom: 14px;
+      right: 16px;
+      font-family: 'Special Elite', monospace;
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      padding: 5px 10px;
+      border-radius: 3px;
+      text-transform: uppercase;
+      background: transparent;
+    }
+
+    .stamp-verified {
+      color: var(--stamp-red);
+      border: 2px solid var(--stamp-red);
+      transform: rotate(-6deg);
+      -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" result="noise"/><feColorMatrix in="noise" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 9 -3"/></filter><rect width="100%25" height="100%25" filter="url(%23n)"/></svg>');
+      -webkit-mask-size: 120px 60px;
+      mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" result="noise"/><feColorMatrix in="noise" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 9 -3"/></filter><rect width="100%25" height="100%25" filter="url(%23n)"/></svg>');
+      mask-size: 120px 60px;
+      opacity: 0.92;
+    }
+
+    .stamp-broken {
+      color: var(--stamp-red);
+      border: 2px solid var(--stamp-red);
+      background: rgba(166, 58, 52, 0.06);
+      transform: rotate(-4deg);
+      -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg"><filter id="n2"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" result="noise"/><feColorMatrix in="noise" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 9 -3"/></filter><rect width="100%25" height="100%25" filter="url(%23n2)"/></svg>');
+      -webkit-mask-size: 130px 60px;
+      mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg"><filter id="n2"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" result="noise"/><feColorMatrix in="noise" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 9 -3"/></filter><rect width="100%25" height="100%25" filter="url(%23n2)"/></svg>');
+      mask-size: 130px 60px;
+      opacity: 0.95;
+    }
+
+    .empty-state {
+      font-family: 'IBM Plex Mono', monospace;
+      color: var(--ink-soft);
+      font-size: 13px;
+      padding: 40px 0;
+      text-align: center;
+      display: none;
+    }
+
+    .info-block {
+      background: var(--paper-card);
+      border: 1px solid var(--line);
+      border-left: 3px solid var(--stamp-red);
+      padding: 22px 24px;
+      margin-bottom: 24px;
+      animation: riseIn .5s ease both;
+    }
+
+    .info-block:nth-of-type(1) {
+      animation-delay: .05s;
+    }
+
+    .info-block:nth-of-type(2) {
+      animation-delay: .18s;
+    }
+
+    @keyframes riseIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .info-block h2 {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: capitalize;
+      letter-spacing: 0.8px;
+      margin: 0 0 14px;
+      color: var(--ink);
+    }
+
+    .info-block p {
+      font-size: 14.5px;
+      margin: 0 0 10px;
+      color: var(--ink-soft);
+    }
+
+    .info-block ul {
+      margin: 0;
+      padding-left: 20px;
+      font-size: 14.5px;
+      color: var(--ink-soft);
+    }
+
+    .info-block li {
+      margin-bottom: 6px;
+    }
+
+    .info-block .contact {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12.5px;
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px dashed var(--line);
+      color: var(--ink-soft);
+    }
+
+    .info-block .contact a {
+      color: var(--stamp-red);
+      text-decoration: none;
+      border-bottom: 1px dotted var(--stamp-red);
+    }
+
+    .pdf-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 6px;
+      margin-right: 10px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12.5px;
+      padding: 9px 16px;
+      border: 1.5px solid var(--ink);
+      border-radius: 3px;
+      background: var(--paper);
+      color: var(--ink);
+      text-decoration: none;
+      transition: background .15s ease, color .15s ease;
+    }
+
+    .pdf-btn:hover {
+      background: var(--ink);
+      color: var(--paper);
+    }
+
+    .sem-block {
+      background: var(--paper-card);
+      border: 1px solid var(--line);
+      padding: 18px 20px;
+      margin-bottom: 16px;
+      border-radius: 2px;
+    }
+
+    .sem-block+.sem-block {
+      margin-top: 16px;
+    }
+
+    .sem-block-title {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      text-transform: capitalize;
+      letter-spacing: 0.8px;
+      color: var(--stamp-red);
+      font-weight: 700;
+      margin: 0 0 12px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--ink);
+    }
+
+    table.syllabus {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
+    }
+
+    table.syllabus th {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10.5px;
+      text-transform: capitalize;
+      letter-spacing: 0.5px;
+      text-align: left;
+      color: var(--ink-soft);
+      border-bottom: 2px solid var(--ink);
+      padding: 8px 10px;
+    }
+
+    table.syllabus td {
+      padding: 9px 10px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    table.syllabus tr:last-child td {
+      border-bottom: none;
+    }
+
+    table.syllabus tr:hover td {
+      background: rgba(0, 0, 0, 0.02);
+    }
+
+    .tag-core {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      color: var(--tab-olive-dark);
+      border: 1px solid var(--tab-olive);
+      border-radius: 20px;
+      padding: 2px 8px;
+      text-transform: capitalize;
+      letter-spacing: 0.3px;
+    }
+
+    .tag-elective {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      color: var(--stamp-red);
+      border: 1px solid var(--stamp-red);
+      border-radius: 20px;
+      padding: 2px 8px;
+      text-transform: capitalize;
+      letter-spacing: 0.3px;
+    }
+
+    .sem-note {
+      font-size: 13.5px;
+      color: var(--ink);
+      margin-top: 12px;
+      padding: 13px 15px;
+      background: rgba(166, 58, 52, 0.09);
+      border-left: 3px solid var(--stamp-red);
+      border-radius: 2px;
+      line-height: 1.65;
+    }
+
+    .sem-note strong {
+      color: var(--stamp-red);
+    }
+
+    footer {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 26px 32px 60px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11.5px;
+      color: var(--ink-soft);
+      border-top: 1px solid var(--line);
+    }
+
+    footer a {
+      color: var(--stamp-red);
+      text-decoration: none;
+      border-bottom: 1px dotted var(--stamp-red);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .card {
+        animation: none;
+        transition: none;
+      }
+
+      .card:hover {
+        transform: none;
+      }
+
+      .info-block {
+        animation: none;
+      }
+
+      .type-cursor {
+        animation: none;
+      }
+
+      html {
+        scroll-behavior: auto;
+      }
+    }
+  </style>
+  <script data-goatcounter="https://the-backlog.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+</head>
+
+<body>
+
+  <header>
+    <div class="brand">
+      <div class="stamp-mark">MCA<br>JNU</div>
+      <div>
+        <h1><span id="typewriter"></span><span class="type-cursor">|</span></h1>
+        <div class="tagline">passed down, batch after batch</div>
+        <div class="tagline">everything seniors left unresolved for you to inherit</div>
+      </div>
+    </div>
+    <div class="meta">
+      <div><strong>MCA · School of Computer &amp; Systems Sciences</strong></div>
+      <div>last stamped: Aug 2026</div>
+    </div>
+  </header>
+
+  <div class="search-wrap">
+    <label class="search-label" for="search">search the backlog</label>
+    <input id="search" class="search-box" type="text" placeholder="Try “blockchain”, “PYQ”, or a subject code…">
+  </div>
+
+  <nav class="top-tabs" id="topTabs">
+    <button class="top-tab main-tab active" data-tab="main">Main</button>
+    <button class="top-tab" data-tab="sem1">Semester 1</button>
+    <button class="top-tab" data-tab="sem2">Semester 2</button>
+    <button class="top-tab" data-tab="sem3">Semester 3</button>
+  </nav>
+
+  <main>
+
+    <!-- MAIN TAB -->
+    <div id="view-main">
+      <div class="info-block">
+        <h2>How This Works</h2>
+        <p>The Backlog is a running archive of notes, PYQs, and reference material — organized so you're not hunting
+          across ten different WhatsApp groups and Drive links to find what you need for an exam. Everything here traces
+          back to what seniors and batchmates actually shared, kept in one place and updated as more comes in.</p>
+        <ul>
+          <li>Every subject card shows credits, a quick look at what's covered, and the current teacher. Click
+            <strong>See more</strong> for the full year-by-year history.
+          </li>
+          <li>The search bar looks across every semester at once, no matter which tab you're on.</li>
+          <li>The <strong>Books</strong> button opens the reference textbooks for that subject — same books regardless
+            of who's teaching.</li>
+          <li>A red dashed <strong>VERIFIED</strong> stamp means the material's been checked and confirmed working.</li>
+          <li>A solid red <strong>BROKEN / MISSING</strong> stamp means something on that subject's page needs attention
+            — a dead link, a missing file, or content that hasn't been checked yet.</li>
+          <li>PYQs and Reference Notes are always listed if they exist. Student Notes and Assignments live under
+            <strong>Additional Material</strong>, since they don't exist for every subject yet.
+          </li>
+          <li>On a subject page, <strong>Download All PYQs</strong> bundles every year's paper into one zip.</li>
+        </ul>
+        <div class="contact">Spotted something broken, or have material to add? Write in — <a
+            href="mailto:paulhack1729@gmail.com">paulhack1729@gmail.com</a></div>
+      </div>
+
+      <div class="info-block">
+        <h2>Full MCA Syllabus</h2>
+        <p>Every subject across all four semesters, unit-wise, for reference.</p>
+        <a class="pdf-btn" href="MCA_Syllabus.pdf" id="syllabusPdfLink" target="_blank" rel="noopener">⤓ Download Full
+          Syllabus (PDF)</a>
+        <a class="pdf-btn" href="MCA_Syllabus_Cores.pdf" id="syllabusCoresPdfLink" target="_blank" rel="noopener">⤓
+          Download Core Subjects Only (PDF)</a>
+        <div id="syllabusTables" style="margin-top:18px;"></div>
+      </div>
+    </div>
+
+    <!-- SEMESTER TAB -->
+    <div id="view-sem" style="display:none;">
+      <nav class="sub-tabs" id="subTabs"></nav>
+      <div id="semGrids"></div>
+      <div class="empty-state" id="empty">nothing on file matching that search — try a different subject or unit.</div>
+    </div>
+
+    <!-- SEARCH RESULTS (spans every semester, shown from any tab) -->
+    <div id="view-search" style="display:none;">
+      <div class="section-title">Search Results</div>
+      <div class="grid" id="searchGrid"></div>
+      <div class="empty-state" id="searchEmpty">nothing on file matching that search.</div>
+    </div>
+
+  </main>
+
+  <footer>
+  Semester 1 is fully live. Semesters 2 and 3 are still being wired up — those cards are marked Broken/Missing until their material is added. Found a dead link, or have something to contribute? Write in — <a href="mailto:paulhack1729@gmail.com">paulhack1729@gmail.com</a>
+</footer>
+  <script>
+    /* ---------- DATA ---------- */
+    const subjects = [
+      {
+        sem: 1, code: 'CS-401', name: 'Programming in C', credits: 2, type: 'core',
+        teacher: 'Dr. Subhash Chandra Patel', rank: 'Asst. Professor', years: '2026 (latest)',
+        preview: 'Program design in C — data types, control structures, arrays, pointers, and file handling.'
+      },
+      {
+        sem: 1, code: 'CS-402', name: 'Computer Fundamentals', credits: 2, type: 'core',
+        teacher: 'Dr. Subhash Chandra Patel', rank: 'Asst. Professor', years: '2026 (latest)',
+        preview: 'Logic gates, Boolean algebra, K-maps, and combinational/sequential circuit design.'
+      },
+      {
+        sem: 1, code: 'CS-403', name: 'Data Structures', credits: 4, type: 'core',
+        teacher: 'Dr. Buddha Singh', rank: 'Asst. Professor', years: '2026 (latest)',
+        preview: 'Linear and non-linear structures, trees, graphs, recursion, sorting and searching.'
+      },
+      {
+        sem: 1, code: 'CS-404', name: 'Discrete Mathematics', credits: 4, type: 'core',
+        teacher: 'Prof. Sonajharia Minz', rank: 'Professor', years: '2025–26 (latest)',
+        preview: 'Sets, relations, logic, Boolean algebra, combinatorics, graphs, and finite state machines.'
+      },
+      {
+        sem: 1, code: 'CS-405', name: 'Computer Architecture', credits: 4, type: 'core',
+        teacher: 'Dr. Asutosh Srivastava', rank: 'Asst. Professor', years: '2022–2026',
+        preview: 'Data representation, register transfer, CPU organization, pipelining, and memory design.'
+      },
+      {
+        sem: 1, code: 'CS-406', name: 'Numerical Methods', credits: 4, type: 'core',
+        teacher: 'Dr. Anuj Sachan', rank: 'Asst. Professor', years: '2026 (latest)',
+        preview: 'Error propagation, root finding, interpolation, numerical integration, and ODEs.'
+      },
+
+      {
+        sem: 2, code: 'CS-407', name: 'Database Management Systems', credits: 4, type: 'core',
+        teacher: 'Dr. Vikas Mittal', rank: 'Asst. Professor', years: '2024–2026',
+        preview: 'ER modeling, normalization, relational algebra, SQL, and transaction processing.'
+      },
+      {
+        sem: 2, code: 'CS-408', name: 'Computer Networks', credits: 4, type: 'core',
+        teacher: 'Dr. Anuj Sachan', rank: 'Asst. Professor', years: '2026 (latest)',
+        preview: 'Data communication, error detection, switching, routing, and transport protocols.'
+      },
+      {
+        sem: 2, code: 'CS-409', name: 'Design and Analysis of Algorithms', credits: 4, type: 'core',
+        teacher: 'Dr. Yogendra Meena', rank: 'Asst. Professor', years: '2024–2026',
+        preview: 'Algorithm analysis, divide-and-conquer, dynamic programming, and NP-completeness.'
+      },
+      {
+        sem: 2, code: 'CS-410', name: 'Object Oriented Programming', credits: 4, type: 'core',
+        teacher: 'Dr. Subhash Chandra Patel', rank: 'Asst. Professor', years: '2026 (latest)',
+        preview: 'Java fundamentals, classes and objects, inheritance, and constructor overloading.'
+      },
+      {
+        sem: 2, code: 'CS-411', name: 'Artificial Intelligence', credits: 4, type: 'core',
+        teacher: 'Dr. Aditi Sharan', rank: 'Associate Professor', years: '2026 (latest)',
+        preview: 'Search strategies, game playing, knowledge representation, and expert systems.'
+      },
+      {
+        sem: 2, code: 'CS-412', name: 'Operating Systems', credits: 4, type: 'core',
+        teacher: 'Prof. Ratneshwer', rank: 'Professor', years: '2024–2026',
+        preview: 'Process scheduling, synchronization, deadlocks, memory and file systems.'
+      },
+
+      {
+        sem: 3, code: 'CS-413', name: 'Software Engineering', credits: 4, type: 'core',
+        teacher: 'Prof. Satish Chand', rank: 'Professor', years: '2026 (latest)',
+        preview: 'Process models, requirements engineering, design concepts, and project estimation.'
+      },
+      {
+        sem: 3, code: 'CS-414', name: 'Theoretical Computer Science', credits: 4, type: 'core',
+        teacher: 'Dr. Sushil Kumar', rank: 'Associate Professor', years: '2026 (latest)',
+        preview: 'Grammars, finite automata, pushdown automata, Turing machines, and computability.'
+      },
+
+      {
+        sem: 3, code: 'CS-425', name: 'Blockchain Technology', credits: 4, type: 'elective',
+        teacher: 'Dr. Poonguzhali N', rank: 'Associate Professor', years: '2025–26',
+        preview: 'How blockchain works, cryptocurrencies, mining, Merkle trees, and smart contracts.'
+      },
+      {
+        sem: 3, code: 'CS-426', name: 'Cloud Computing and IoT', credits: 4, type: 'elective',
+        teacher: 'Prof. Zahid Raza', rank: 'Professor', years: '2025–26',
+        preview: 'Cloud fundamentals, virtualization, IoT architecture, and Arduino/Raspberry Pi.'
+      },
+      {
+        sem: 3, code: 'CS-429', name: 'Cyber Security', credits: 4, type: 'elective',
+        teacher: 'Dr. Jasraj Meena', rank: 'Associate Professor', years: '2026 (latest)',
+        preview: 'Cryptography basics, cyber crimes, defence techniques, and cyber forensics/law.'
+      },
+      {
+        sem: 3, code: 'CS-433', name: 'Machine Learning', credits: 4, type: 'elective',
+        teacher: 'Dr. Vikas Mittal', rank: 'Asst. Professor', years: '2026 (latest)',
+        preview: 'Inductive learning, neural networks, genetic-based learning, and reinforcement learning.'
+      },
+      {
+        sem: 3, code: 'CS-437', name: 'Natural Language Processing', credits: 4, type: 'elective',
+        teacher: 'Prof. Piyush Pratap Singh', rank: 'Professor', years: '2026 (latest)',
+        preview: 'Linguistic essentials, grammars, parsing, and statistical NLP techniques.'
+      },
+      {
+        sem: 3, code: 'CS-443', name: 'Software Testing', credits: 4, type: 'elective',
+        teacher: 'Dr. Tirthankar Gayen', rank: 'Asst. Professor', years: '2026 (latest)',
+        preview: 'Testing levels, white/black-box testing, unit testing, and quality standards.'
+      },
+      {
+        sem: 3, code: 'CS-445', name: 'Web Based Programming', credits: 4, type: 'elective',
+        teacher: 'Not on record', rank: '', years: '—',
+        preview: 'Syllabus and instructor details not on file yet.'
+      },
+      {
+        sem: 3, code: 'CS-446', name: 'Wireless Networks', credits: 4, type: 'elective',
+        teacher: 'Dr. Buddha Singh', rank: 'Asst. Professor', years: '2026 (latest)',
+        preview: 'Wireless transmission, multiple access techniques, cellular systems, and MANETs.'
+      },
+
+      {
+        sem: 4, code: 'CS-460', name: 'Project', credits: 8, type: 'core',
+        teacher: null, rank: null, years: null, preview: null
+      },
+    ];
+
+    const semLabels = { 1: 'Semester 1', 2: 'Semester 2', 3: 'Semester 3', 4: 'Semester 4' };
+
+    /* ---------- STAMP LOGIC: Sem 1 verified, Sem 2 & 3 broken/missing ---------- */
+    function stampHTML(sem) {
+      if (sem === 1) return '<div class="stamp stamp-verified">Verified</div>';
+      return '<div class="stamp stamp-broken">Broken / Missing</div>';
+    }
+
+    /* ---------- CARD RENDERING ---------- */
+    function cardHTML(s) {
+      return `
+    <div class="card" data-search="${(s.code + ' ' + s.name + ' ' + s.teacher).toLowerCase()}">
+      <div class="card-top">
+        <span class="card-code">${s.code}</span>
+        <span class="credits-tag">${s.credits} Credits</span>
+      </div>
+      <h3>${s.name}</h3>
+      <p class="preview">${s.preview}</p>
+      <p class="teacher-line"><strong>${s.teacher}</strong>${s.rank ? `<span class="rank-tag">${s.rank}</span>` : ''}<br>${s.years}</p>
+      <div class="card-actions">
+        <a class="btn" href="books.html?code=${s.code.toLowerCase()}">Books</a>
+        <a class="btn primary" href="subject.html?code=${s.code.toLowerCase()}">See more →</a>
+      </div>
+      ${stampHTML(s.sem)}
+    </div>`;
+    }
+
+    function renderSemGrid(semNum) {
+      const list = subjects.filter(s => s.sem === semNum);
+      const core = list.filter(s => s.type === 'core').sort((a, b) => a.code.localeCompare(b.code));
+      const electives = list.filter(s => s.type === 'elective').sort((a, b) => a.code.localeCompare(b.code));
+
+      let html = `<div class="section-title" data-section="core">Core</div>
+    <div class="grid" data-section="core">${core.map(cardHTML).join('')}</div>`;
+
+      if (electives.length) {
+        html += `<div class="section-title" data-section="elective">Electives</div>
+      <div class="grid" data-section="elective">${electives.map(cardHTML).join('')}</div>`;
+      }
+      return html;
+    }
+
+    /* ---------- SYLLABUS TABLE (Main tab), divided per semester ---------- */
+    function renderSyllabus() {
+      const container = document.getElementById('syllabusTables');
+      let html = '';
+      [1, 2, 3, 4].forEach(sem => {
+        const list = subjects.filter(s => s.sem === sem).sort((a, b) => a.code.localeCompare(b.code));
+        html += `<div class="sem-block">
+      <div class="sem-block-title">${semLabels[sem]}</div>
+      <table class="syllabus">
+        <thead><tr><th>Code</th><th>Subject</th><th>Credits</th><th>Type</th></tr></thead>
+        <tbody>
+          ${list.map(s => `<tr>
+            <td>${s.code}</td><td>${s.name}</td><td>${s.credits}</td>
+            <td><span class="${s.type === 'core' ? 'tag-core' : 'tag-elective'}">${s.type === 'core' ? 'Core' : 'Elective'}</span></td>
+          </tr>`).join('')}
+        </tbody>
+      </table>`;
+      if(sem === 3){
+  const electiveCount = subjects.filter(s => s.sem === 3 && s.type === 'elective').length;
+  html += `<div class="sem-note"><strong>Elective limit:</strong> The ${electiveCount} electives listed above are everything that's historically been offered — but you don't take all of them. Alongside the 2 core subjects, you can choose only <strong>4 electives</strong> for the semester. Which of the ${electiveCount} are actually running in a given year depends on faculty availability, so the exact set offered to your batch may not match this full list — check with the department at the start of the semester before finalizing your picks, and have a backup elective in mind in case your first choice isn't offered that year.</div>`;
+}
+        if (sem === 4) {
+          html += `<div class="sem-note">In this semester, you'll be doing a <strong>project</strong>, an <strong>internship</strong>, or a <strong>research internship</strong> — which route you take depends on what's available to you and what you're aiming for afterward. If you land a placement during this period, that typically works in place of the project as well.<br><br>Every student is already assigned an <strong>advisor</strong> earlier in the program — this is separate from the project <strong>supervisor</strong> you'll need for Semester 4. You're free to ask your existing advisor to also be your supervisor, and that's usually the simplest option if they have room to take you on. But supervisor slots are limited — each supervisor (advisor or otherwise) can only take on a certain number of students — so if your advisor's already full, or if you'd rather work with someone else entirely, you'll need to approach another supervisor with an open seat. Either way, it's worth having a backup in mind rather than assuming your first choice will have space.</div>`;
+        }
+        html += `</div>`;
+      });
+      container.innerHTML = html;
+    }
+    renderSyllabus();
+
+    /* ---------- TAB SWITCHING ---------- */
+    const topTabs = document.querySelectorAll('.top-tab');
+    const viewMain = document.getElementById('view-main');
+    const viewSem = document.getElementById('view-sem');
+    const viewSearch = document.getElementById('view-search');
+    const subTabsNav = document.getElementById('subTabs');
+    const semGrids = document.getElementById('semGrids');
+    const searchGrid = document.getElementById('searchGrid');
+    const searchInput = document.getElementById('search');
+    const emptyState = document.getElementById('empty');
+    const searchEmpty = document.getElementById('searchEmpty');
+
+    let currentSem = null;
+    let currentSubjectFilter = 'all';
+
+    function activateTopTab(tabKey) {
+      sessionStorage.setItem('backlog-active-tab', tabKey);
+      topTabs.forEach(t => t.classList.toggle('active', t.dataset.tab === tabKey));
+
+      if (tabKey === 'main') {
+        viewMain.style.display = '';
+        viewSem.style.display = 'none';
+        viewSearch.style.display = 'none';
+        return;
+      }
+
+      viewMain.style.display = 'none';
+      viewSearch.style.display = 'none';
+      viewSem.style.display = '';
+      currentSem = parseInt(tabKey.replace('sem', ''));
+      currentSubjectFilter = 'all';
+      buildSubTabs(currentSem);
+      semGrids.innerHTML = renderSemGrid(currentSem);
+      applyFilters();
+    }
+
+    function buildSubTabs(semNum) {
+      const list = subjects.filter(s => s.sem === semNum).sort((a, b) => a.code.localeCompare(b.code));
+      let html = `<button class="sub-tab active" data-subject="all">All Subjects</button>`;
+      list.forEach(s => {
+        html += `<button class="sub-tab" data-subject="${s.code}">${s.name}</button>`;
+      });
+      subTabsNav.innerHTML = html;
+
+      subTabsNav.querySelectorAll('.sub-tab').forEach(btn => {
+        btn.addEventListener('click', () => {
+          subTabsNav.querySelectorAll('.sub-tab').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          currentSubjectFilter = btn.dataset.subject;
+          applyFilters();
+        });
+      });
+    }
+
+    function applyFilters() {
+      const query = searchInput.value.trim().toLowerCase();
+      const cards = semGrids.querySelectorAll('.card');
+      let anyVisible = false;
+
+      cards.forEach(card => {
+        const matchesSubject = currentSubjectFilter === 'all' || card.querySelector('.card-code').textContent === currentSubjectFilter;
+        const matchesSearch = !query || card.dataset.search.includes(query);
+        const show = matchesSubject && matchesSearch;
+        card.style.display = show ? '' : 'none';
+        if (show) anyVisible = true;
+      });
+
+      semGrids.querySelectorAll('.section-title').forEach(title => {
+        const grid = title.nextElementSibling;
+        const visible = grid.querySelectorAll('.card:not([style*="display: none"])').length;
+        title.style.display = visible ? '' : 'none';
+        grid.style.display = visible ? '' : 'none';
+      });
+
+      emptyState.style.display = anyVisible ? 'none' : 'block';
+    }
+
+    // Global search — checks every subject across every semester, regardless of the active tab
+    function renderGlobalSearch(query) {
+      const matches = subjects.filter(s =>
+        (s.code + ' ' + s.name + ' ' + s.teacher).toLowerCase().includes(query)
+      );
+
+      topTabs.forEach(t => t.classList.remove('active'));
+      viewMain.style.display = 'none';
+      viewSem.style.display = 'none';
+      viewSearch.style.display = '';
+
+      searchGrid.innerHTML = matches.map(cardHTML).join('');
+      searchEmpty.style.display = matches.length ? 'none' : 'block';
+    }
+
+    function exitGlobalSearch() {
+      const savedTab = sessionStorage.getItem('backlog-active-tab') || 'main';
+      activateTopTab(savedTab);
+    }
+
+    topTabs.forEach(tab => {
+      tab.addEventListener('click', () => activateTopTab(tab.dataset.tab));
+    });
+
+    searchInput.addEventListener('input', () => {
+      const query = searchInput.value.trim().toLowerCase();
+      if (query) {
+        renderGlobalSearch(query);
+      } else {
+        exitGlobalSearch();
+      }
+    });
+
+    // Restore whichever tab was active before navigating to a subject/book page
+    const savedTab = sessionStorage.getItem('backlog-active-tab');
+    if (savedTab) activateTopTab(savedTab);
+
+    (function typewriterLoop() {
+      const el = document.getElementById('typewriter');
+      const text = 'The Backlog';
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        el.textContent = text;
+        return;
+      }
+      let i = 0, deleting = false;
+
+      function tick() {
+        if (!deleting) {
+          i++;
+          el.textContent = text.slice(0, i);
+          if (i === text.length) { deleting = true; setTimeout(tick, 2200); return; }
+          setTimeout(tick, 130);
+        } else {
+          i--;
+          el.textContent = text.slice(0, i);
+          if (i === 0) { deleting = false; setTimeout(tick, 600); return; }
+          setTimeout(tick, 70);
+        }
+      }
+      tick();
+    })();
+  </script>
+
+</body>
+
+</html>
