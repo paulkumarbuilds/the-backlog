@@ -290,9 +290,40 @@
       text-decoration: none;
       border-bottom: 1px dotted var(--stamp-red);
     }
+
+    @media (max-width: 640px) {
+      .wrap {
+        padding: 24px 16px 60px;
+      }
+
+      .page-header {
+        padding: 18px 16px;
+      }
+
+      .book-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .copyright-stamp {
+      display: inline-block;
+      font-family: 'Special Elite', monospace;
+      font-size: 10.5px;
+      letter-spacing: 1px;
+      color: var(--ink);
+      border: 2px solid var(--ink);
+      border-radius: 3px;
+      padding: 6px 12px;
+      transform: rotate(-2deg);
+      text-transform: uppercase;
+      -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg"><filter id="cn"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" result="noise"/><feColorMatrix in="noise" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 9 -3"/></filter><rect width="100%25" height="100%25" filter="url(%23cn)"/></svg>');
+      -webkit-mask-size: 140px 60px;
+      mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg"><filter id="cn"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" result="noise"/><feColorMatrix in="noise" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 9 -3"/></filter><rect width="100%25" height="100%25" filter="url(%23cn)"/></svg>');
+      mask-size: 140px 60px;
+      opacity: 0.85;
+    }
   </style>
-  <script data-goatcounter="https://the-backlog.goatcounter.com/count"
-        async src="//gc.zgo.at/count.js"></script>
+  <script data-goatcounter="https://the-backlog.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </head>
 
 <body>
@@ -300,8 +331,14 @@
   <div class="wrap" id="app"></div>
 
   <footer>
-    Part of <a href="index.html">The Backlog</a> — missing a book or found a broken link? <a
-      href="mailto:paulhack1729@gmail.com">paulhack1729@gmail.com</a>
+    <div>Semester 1 is fully live. Semesters 2 and 3 are still being wired up — those cards are marked Broken/Missing
+      until their material is added. Found a dead link, or have something to contribute? Write in — <a
+        href="mailto:paulhack1729@gmail.com">paulhack1729@gmail.com</a></div>
+    <div style="margin-top:10px; padding-top:10px; border-top:1px dashed var(--line);">© 2026 The Backlog. Notes and
+      papers belong to their original contributors — shared here for study purposes only.</div>
+    <div style="margin-top:14px;">
+      <span class="copyright-stamp">© 2026 · All Rights Reserved</span>
+    </div>
   </footer>
 
   <script src="js/data.js"></script>
@@ -331,7 +368,10 @@
       const books = subj.books || [];
 
       app.innerHTML = `
-    <div class="crumb"><a href="index.html">The Backlog</a> · <a href="index.html">Semester ${subj.sem}</a> · <a href="subject.html?code=${subj.code.toLowerCase()}">${subj.code}</a> · Books</div>
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+      <div class="crumb" style="margin-bottom:0;"><a href="index.html">The Backlog</a> · <a href="index.html">Semester ${subj.sem}</a> · <a href="subject.html?code=${subj.code.toLowerCase()}">${subj.code}</a> · Books</div>
+      <span class="copyright-stamp" style="font-size:9px; padding:4px 9px;">© 2026 · All Rights Reserved</span>
+    </div>
 
     <div class="page-header">
       <div class="label">Reference Books</div>
@@ -351,7 +391,7 @@
             <div class="book-author">${esc(b.author)}</div>
           </div>
           <div class="book-actions">
-            <a class="dl-btn" href="${encodeURI(b.file)}" target="_blank" rel="noopener" download>⤓ Download PDF</a>
+            <a class="dl-btn" href="${encodeURI(b.file)}" target="_blank" rel="noopener">⤓ Download PDF</a>
           </div>
         </div>`).join('') : `<div class="empty-note" style="font-family:'IBM Plex Mono', monospace; color:var(--ink-soft); font-style:italic;">No books on file for this subject yet.</div>`}
     </div>
